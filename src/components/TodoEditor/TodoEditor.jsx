@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import './TodoEditor.scss';
+import css from './TodoEditor.module.css';
 
 class TodoEditor extends Component {
   state = {
@@ -13,7 +13,13 @@ class TodoEditor extends Component {
   hundleSubmit = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.state.message);
+    const { message } = this.state;
+
+    if (!message.trim().length) {
+      return;
+    }
+
+    this.props.onSubmit(message);
 
     this.setState({ message: '' });
   };
@@ -22,13 +28,13 @@ class TodoEditor extends Component {
     const { message } = this.state;
 
     return (
-      <form className="TodoEditor" onSubmit={this.hundleSubmit}>
+      <form className={css.form} onSubmit={this.hundleSubmit}>
         <textarea
-          className="TodoEditor__textarea"
+          className={css.textarea}
           value={message}
           onChange={this.handleChange}
-        ></textarea>
-        <button className="TodoEditor__button">Save</button>
+        />
+        <button className={css.button}>Save</button>
       </form>
     );
   }

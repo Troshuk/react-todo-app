@@ -1,25 +1,23 @@
-import './TodoList.scss';
+import css from './TodoList.module.css';
 
 const TodoList = ({ todos, onDelete, onToggleComplete }) => {
   return (
-    <ul className="TodoList">
+    <ul className={css.list}>
       {todos.map(({ id, text, completed }) => (
         <li
           key={id}
-          className={`TodoList__item ${
-            completed ? 'TodoList__item--completed' : ''
-          }`}
+          className={`${css.item} ${completed ? css.completed : ''}`}
         >
           <input
             type="checkbox"
-            className="TodoList__checkbox"
+            className={css.checkbox}
             checked={completed}
             onChange={() => onToggleComplete(id)}
           />
-          <p className="TodoList__text">{text}</p>
+          <p className={css.text}>{text}</p>
           <button
             type="button"
-            className="TodoList__btn"
+            className={css.button}
             onClick={() => onDelete(id)}
           >
             Delete
