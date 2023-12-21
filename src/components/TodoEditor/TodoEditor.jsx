@@ -3,35 +3,38 @@ import css from './TodoEditor.module.css';
 
 class TodoEditor extends Component {
   state = {
-    message: '',
+    text: '',
+    ...this.props?.item,
   };
 
   handleChange = e => {
-    this.setState({ message: e.currentTarget.value });
+    this.setState({ text: e.currentTarget.value });
   };
 
   hundleSubmit = e => {
     e.preventDefault();
 
-    const { message } = this.state;
+    const { text } = this.state;
 
-    if (!message.trim().length) {
+    if (!text.trim().length) {
       return;
     }
 
-    this.props.onSubmit(message);
+    this.props.onSubmit(this.state);
 
-    this.setState({ message: '' });
+    this.setState({ text: '' });
+
+    this.props?.toggleModal?.();
   };
 
   render() {
-    const { message } = this.state;
+    const { text } = this.state;
 
     return (
       <form className={css.form} onSubmit={this.hundleSubmit}>
         <textarea
           className={css.textarea}
-          value={message}
+          value={text}
           onChange={this.handleChange}
         />
         <button className={css.button}>Save</button>

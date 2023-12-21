@@ -6,6 +6,7 @@ import { TodoList } from './TodoList';
 import { TodoEditor } from './TodoEditor';
 import { TodoFilter } from './TodoFilter';
 import { Stats } from './Stats';
+import { Modal } from './Modal';
 
 import initialTodos from 'data/todos.json';
 
@@ -15,22 +16,30 @@ class App extends Component {
     filter: '',
   };
 
-  addTodo = text => {
+  addTodo = item => {
     this.setState(({ todos }) => ({
       todos: [
         ...todos,
         {
           id: nanoid(),
-          text,
           completed: false,
+          ...item,
         },
       ],
     }));
   };
 
-  deleteTodo = todoId => {
+  deleteTodo = id => {
     this.setState(prevState => ({
-      todos: prevState.todos.filter(todo => todo.id !== todoId),
+      todos: prevState.todos.filter(todo => todo.id !== id),
+    }));
+  };
+
+  updateTodo = item => {
+    this.setState(prevState => ({
+      todos: prevState.todos.map(todo =>
+        todo.id === item.id ? { ...todo, ...item } : todo
+      ),
     }));
   };
 
@@ -73,7 +82,9 @@ class App extends Component {
 
     return (
       <Container>
-        <TodoEditor onSubmit={this.addTodo} />
+        <Modal title="Add new ToDo">
+          <TodoEditor onSubmit={this.addTodo} />
+        </Modal>
 
         <Stats
           total={this.getTotalCount()}
@@ -85,6 +96,7 @@ class App extends Component {
         <TodoList
           todos={this.getFilteredTodos()}
           onDelete={this.deleteTodo}
+          onUpdate={this.updateTodo}
           onToggleComplete={this.toggleCompleted}
         />
       </Container>
